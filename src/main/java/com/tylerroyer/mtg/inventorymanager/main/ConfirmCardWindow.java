@@ -25,8 +25,10 @@ public class ConfirmCardWindow extends JFrame implements ActionListener {
     private JButton yesButton, noButton, okButton;
 
     private Card card;
+    private MainWindow parentWindow;
 
-    public ConfirmCardWindow(String rawCardInfo) {
+    public ConfirmCardWindow(MainWindow parentWindow, String rawCardInfo) {
+        this.parentWindow = parentWindow;
         topPanel = new JPanel();
         statusLabel = new JLabel(" Searching...");
         loadingLabel = new JLabel("");
@@ -83,6 +85,7 @@ public class ConfirmCardWindow extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == yesButton) {
             Inventory.addCardToInventory(card, false); // TODO Implement foils
+            parentWindow.displayInventory();
             this.dispose();
         } else if (e.getSource() == noButton || e.getSource() == okButton) {
             this.dispose();

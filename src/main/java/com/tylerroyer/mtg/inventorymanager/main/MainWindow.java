@@ -5,12 +5,13 @@ import javax.swing.*;
 import com.tylerroyer.mtg.Card;
 
 import java.awt.event.*;
-import java.awt.FlowLayout;
+import java.awt.Component;
 
 public class MainWindow extends JFrame implements ActionListener {
     private final String TITLE = "MTG Inventory Manager";
 
     private JMenuItem addCardMenuItem;
+    private JPanel cardsPanel;
 
     public MainWindow() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,23 +25,20 @@ public class MainWindow extends JFrame implements ActionListener {
         menuBar.add(fileMenu);
         this.setJMenuBar(menuBar);
 
+        cardsPanel = new JPanel();
         displayInventory();
         this.setVisible(true);
     }
 
     public void displayInventory() {
-        JPanel cardsPanel = new JPanel();
-        JScrollPane scrollPane = new JScrollPane(cardsPanel);
+        cardsPanel.removeAll();
+        cardsPanel.setLayout(new BoxLayout(cardsPanel, BoxLayout.Y_AXIS));
         for (Card card : Inventory.getCards()) {
-            System.out.println(card.getName());
-            JPanel cardPanel = new JPanel();
-            cardPanel.setLayout(new FlowLayout());
-            cardPanel.add(new JLabel(card.getName()));
-            cardPanel.add(new JLabel(card.getType()));
-
-            cardsPanel.add(cardPanel);
+            JLabel label = new JLabel(card.getName(), SwingConstants.LEFT);
+            label.setAlignmentX(Component.LEFT_ALIGNMENT);
+            cardsPanel.add(label);
         }
-        this.add(scrollPane);
+        this.add(cardsPanel);
         this.pack();
         this.setLocationRelativeTo(null);
     }
@@ -52,7 +50,7 @@ public class MainWindow extends JFrame implements ActionListener {
             String title = "Enter Card Info";
             String response = (String) JOptionPane.showInputDialog(this, message, title, JOptionPane.PLAIN_MESSAGE);
             
-            new ConfirmCardWindow(response);
+            new ConfirmCardWindow(this, response);
         }
     }
 }
