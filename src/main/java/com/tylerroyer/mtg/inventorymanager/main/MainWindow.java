@@ -2,7 +2,10 @@ package com.tylerroyer.mtg.inventorymanager.main;
 
 import javax.swing.*;
 
+import com.tylerroyer.mtg.Card;
+
 import java.awt.event.*;
+import java.awt.FlowLayout;
 
 public class MainWindow extends JFrame implements ActionListener {
     private final String TITLE = "MTG Inventory Manager";
@@ -21,9 +24,25 @@ public class MainWindow extends JFrame implements ActionListener {
         menuBar.add(fileMenu);
         this.setJMenuBar(menuBar);
 
+        displayInventory();
+        this.setVisible(true);
+    }
+
+    public void displayInventory() {
+        JPanel cardsPanel = new JPanel();
+        JScrollPane scrollPane = new JScrollPane(cardsPanel);
+        for (Card card : Inventory.getCards()) {
+            System.out.println(card.getName());
+            JPanel cardPanel = new JPanel();
+            cardPanel.setLayout(new FlowLayout());
+            cardPanel.add(new JLabel(card.getName()));
+            cardPanel.add(new JLabel(card.getType()));
+
+            cardsPanel.add(cardPanel);
+        }
+        this.add(scrollPane);
         this.pack();
         this.setLocationRelativeTo(null);
-        this.setVisible(true);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.tylerroyer.mtg.inventorymanager.main;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
@@ -52,8 +51,6 @@ public class Inventory {
             }
             saveCard(cards.get(index));
         }
-        
-        System.out.println(cards);
     }
 
     private static void saveCard(Card card) {
@@ -71,4 +68,7 @@ public class Inventory {
         return -1;
     }
 
+    public static ArrayList<Card> getCards() {
+        return cards;
+    }
 }
