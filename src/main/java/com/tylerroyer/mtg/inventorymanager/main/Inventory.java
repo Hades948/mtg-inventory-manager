@@ -32,22 +32,22 @@ public class Inventory {
         }
     }
 
-    public static void addCardToInventory(Card card, boolean isFoil) {
-        int index = findCard(card.getScryfallUUID());
+    public static void addCardToInventory(Card newCard, boolean isFoil) {
+        int index = findCard(newCard.getScryfallUUID());
 
         if (index == -1) { // New card
             if (isFoil) {
-                card.setFoilQuantity(1);
+                newCard.setFoilQuantity(newCard.getFoilQuantity());
             } else {
-                card.setQuantity(1);
+                newCard.setQuantity(newCard.getQuantity());
             }
-            cards.add(card);
-            saveCard(card);
+            cards.add(newCard);
+            saveCard(newCard);
         } else { // Card already exists
             if (isFoil) {
-                cards.get(index).incrementFoilQuantity();
+                cards.get(index).setFoilQuantity(cards.get(index).getFoilQuantity() + newCard.getFoilQuantity());
             } else {
-                cards.get(index).incrementQuantity();
+                cards.get(index).setQuantity(cards.get(index).getQuantity() + newCard.getQuantity());
             }
             saveCard(cards.get(index));
         }
@@ -70,5 +70,29 @@ public class Inventory {
 
     public static ArrayList<Card> getCards() {
         return cards;
+    }
+
+    public static int getNumberOfUniqueCards() {
+        return getCards().size();
+    }
+
+    public static int getTotalNumberOfCards() {
+        int total = 0;
+        for (Card card : getCards()) {
+            total += card.getQuantity() + card.getFoilQuantity();
+        }
+        return total;
+    }
+
+    public static float getTotalValueOfCards() {
+        float total = 0.0f;
+        for (Card card : getCards()) {
+            total += card.getTotalValue();
+        }
+        return total;
+    }
+
+    public static float getAverageValueOfCards() {
+        return getTotalValueOfCards() / getTotalNumberOfCards();
     }
 }

@@ -6,6 +6,7 @@ import com.tylerroyer.mtg.Card;
 import com.tylerroyer.mtg.inventorymanager.net.Scryfall;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.awt.event.*;
 import java.io.IOException;
@@ -22,6 +23,8 @@ public class ConfirmCardWindow extends JFrame implements ActionListener {
     private JLabel statusLabel;
     private JLabel loadingLabel;
     private JPanel topPanel;
+    private JCheckBox foilCheckBox;
+    private JTextField quantityTextField;
     private JButton yesButton, noButton, okButton;
 
     private Card card;
@@ -30,11 +33,26 @@ public class ConfirmCardWindow extends JFrame implements ActionListener {
     public ConfirmCardWindow(MainWindow parentWindow, String rawCardInfo) {
         this.parentWindow = parentWindow;
         topPanel = new JPanel();
+        JPanel modifiersPanel = new JPanel();
+        modifiersPanel.setLayout(new BorderLayout());
+        foilCheckBox = new JCheckBox();
+        foilCheckBox.setText("Foil?");
+        modifiersPanel.add(foilCheckBox, BorderLayout.WEST);
         statusLabel = new JLabel(" Searching...");
         loadingLabel = new JLabel("");
 
+        JPanel quantityPanel = new JPanel();
+        quantityPanel.setLayout(new BorderLayout());
+        quantityPanel.add(new JLabel("Qty: "), BorderLayout.WEST);
+        quantityTextField = new JTextField();
+        quantityTextField.setText("1");
+        quantityTextField.setPreferredSize(new Dimension(75, 20));
+        quantityPanel.add(quantityTextField, BorderLayout.EAST);
+        modifiersPanel.add(quantityPanel, BorderLayout.EAST);
+
         topPanel.setLayout(new BorderLayout());
         topPanel.add(statusLabel, BorderLayout.WEST);
+        topPanel.add(modifiersPanel, BorderLayout.CENTER);
 
         this.setLayout(new BorderLayout());
         this.add(topPanel, BorderLayout.NORTH);
@@ -75,6 +93,10 @@ public class ConfirmCardWindow extends JFrame implements ActionListener {
             optionsPanel.add(yesButton, BorderLayout.WEST);
             optionsPanel.add(noButton, BorderLayout.EAST);
             topPanel.add(optionsPanel, BorderLayout.EAST);
+
+            this.getRootPane().setDefaultButton(yesButton);
+            quantityTextField.requestFocus();
+            quantityTextField.selectAll();
         }
 
         this.pack();
@@ -84,7 +106,14 @@ public class ConfirmCardWindow extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == yesButton) {
-            Inventory.addCardToInventory(card, false); // TODO Implement foils
+            boolean foil = foilCheckBox.isSelected();
+            int quantity = Integer.parseInt(quantityTextField.getText());
+            if (foil) {
+                card.setFoilQuantity(quantity);
+            } else {
+                card.setQuantity(quantity);
+            }
+            Inventory.addCardToInventory(card, foil); // TODO Implement foils
             parentWindow.displayInventory();
             this.dispose();
         } else if (e.getSource() == noButton || e.getSource() == okButton) {

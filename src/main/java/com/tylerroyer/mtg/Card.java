@@ -43,6 +43,7 @@ public class Card {
         foilQuantity = json.getInt("foil_quantity");
         price = json.getFloat("price");
         foilPrice = json.getFloat("foil_price");
+        colors = json.getJSONArray("colors");
     }
 
     public String getName() {
@@ -168,8 +169,82 @@ public class Card {
         return json;
     }
 
+    public float getTotalValue() {
+        return quantity * price + foilQuantity * foilPrice;
+    }
+
+    private final int NAME_WIDTH = 32;
+    private final int TYPE_WIDTH = 40;
+    private final int COLORS_WIDTH = 13;
+    private final int COLLECTOR_WIDTH = 11;
+    private final int QUANTITY_WIDTH = 5;
+    private final int VALUE_WIDTH = 8;
+
     @Override
     public String toString() {
-        return setName + " (" + set + ") #" + collectorNumber + ": " + name;
+        String s = " ";
+
+        // Name
+        String nameS = name;        
+        while (nameS.length() < NAME_WIDTH) {
+            nameS += " ";
+        }
+        s += nameS;
+
+        // Type
+        String typeS = type;
+        while (typeS.length() < TYPE_WIDTH) {
+            typeS += " ";
+        }
+        s += typeS;
+
+        // Colors
+        String colorsS = "";
+        if (colors != null) {
+            for (int i = 0; i < colors.length(); i++) {
+                if (i != 0) {
+                    colorsS += "/";
+                }
+                colorsS += colors.get(i);
+            }
+        }
+        while (colorsS.length() < COLORS_WIDTH) {
+            colorsS += " ";
+        }
+        s += colorsS;
+
+        // Set and Collector Number
+        String collectorS = set.toUpperCase() + " " + collectorNumber;
+        while (collectorS.length() < COLLECTOR_WIDTH) {
+            collectorS += " ";
+        }
+        s += collectorS;
+
+        // Quantity
+        String sQuantity = String.valueOf(quantity);
+        while (sQuantity.length() < QUANTITY_WIDTH) {
+            sQuantity += " ";
+        }
+        s += sQuantity;
+
+        // Foil Quantity
+        String sFoilQuantity = String.valueOf(foilQuantity);
+        while (sFoilQuantity.length() < QUANTITY_WIDTH) {
+            sFoilQuantity += " ";
+        }
+        s += sFoilQuantity;
+
+        // Total value
+        float value = getTotalValue();
+        String valueS = String.format("%.2f", value);
+        while (valueS.length() < VALUE_WIDTH-2) {
+            valueS = " " + valueS;
+        }
+        valueS = "$ " + valueS;
+        s += valueS;
+
+        s += " ";
+
+        return s;
     }
 }

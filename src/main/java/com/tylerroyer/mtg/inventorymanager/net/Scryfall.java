@@ -9,11 +9,15 @@ import java.net.URL;
 import com.tylerroyer.mtg.Card;
 import com.tylerroyer.mtg.inventorymanager.main.ConfirmCardWindow;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Scryfall {
     private static final String API_URL = "https://api.scryfall.com";
     private static final String CARD_REQUEST_ENDPOINT = "/cards/collection";
+
+    private static long timeOfLastPing = 0L;
 
     public static void getCard(ConfirmCardWindow returnWindow, String rawCardInfo) {
         GetCardThread getCardThread = new GetCardThread(returnWindow, rawCardInfo);
@@ -31,10 +35,14 @@ public class Scryfall {
 
         @Override
         public void run() {
-            // Don't do too many requests.  This should be dynamic.
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e1) {e1.printStackTrace();}
+            // Don't do too many requests.
+            long elapsed = System.currentTimeMillis() - timeOfLastPing;
+            if (elapsed < 100) {
+                try {
+                    Thread.sleep(100 - elapsed);
+                } catch (InterruptedException e1) {e1.printStackTrace();}
+            }
+            timeOfLastPing = System.currentTimeMillis();
 
             Card card = new Card();
             String[] cardData = rawCardInfo.split(" ");
@@ -83,15 +91,52 @@ public class Scryfall {
                 JSONObject json = new JSONObject(response.toString());
                 JSONObject data = json.getJSONArray("data").getJSONObject(0);
                 card.setName(data.getString("name"));
-                card.setType(data.getString("type_line"));
+                card.setType(data.getString("type_line").replace("—", "-"));
                 card.setSet(data.getString("set"));
                 card.setSetName(data.getString("set_name"));
-                card.setCollectorNumber(data.getString("collector_number"));
+
+                // Collector number
+                String collectorNum = data.getString("collector_number");
+                while (collectorNum.length() < 3) {
+                    collectorNum = "0" + collectorNum;
+                }
+                card.setCollectorNumber(collectorNum);
+                
                 card.setImageUrl(data.getJSONObject("image_uris").getString("normal"));
                 card.setScryfallUUID(data.getString("id"));
-                card.setPrice(Float.parseFloat(data.getJSONObject("prices").getString("usd")));
-                card.setFoilPrice(Float.parseFloat(data.getJSONObject("prices").getString("usd_foil")));
-                card.setColors(data.getJSONArray("colors"));
+
+                // Prices
+                JSONObject prices = data.getJSONObject("prices");
+                card.setPrice(prices.getFloat("usd"));
+                try {
+                    card.setFoilPrice(prices.getFloat("usd_foil"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    card.setFoilPrice(0.0f);
+                }
+
+                // Colors
+                JSONArray shortColors = data.getJSONArray("colors");
+                JSONArray longColors = new JSONArray();
+                for (int i = 0; i < shortColors.length(); i++) {
+                    if (shortColors.get(i).equals("W")) {
+                        longColors.put("White");
+                    } else if (shortColors.get(i).equals("U")) {
+                        longColors.put("Blue");
+                    } else if (shortColors.get(i).equals("B")) {
+                        longColors.put("Black");
+                    } else if (shortColors.get(i).equals("R")) {
+                        longColors.put("Red");
+                    } else if (shortColors.get(i).equals("G")) {
+                        longColors.put("Green");
+                    } else {
+                        longColors.put("Unkn.");
+                    }
+                }
+                if (shortColors.length() == 0) {
+                    longColors.put("None");
+                }
+                card.setColors(longColors);
 
             } catch (Exception e) {
                 e.printStackTrace();
