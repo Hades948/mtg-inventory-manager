@@ -1,6 +1,7 @@
 package com.tylerroyer.mtg;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Card {
     private String name;
@@ -28,6 +29,20 @@ public class Card {
         foilQuantity = 0;
         price = 0.0f;
         foilPrice = 0.0f;
+    }
+
+    public Card(JSONObject json) {
+        name = json.getString("name");
+        type = json.getString("type");
+        set = json.getString("set");
+        setName = json.getString("set_name");
+        collectorNumber = json.getString("collector_number");
+        imageUrl = json.getString("image_url");
+        scryfallUUID = json.getString("scryfall_uuid");
+        quantity = json.getInt("quantity");
+        foilQuantity = json.getInt("foil_quantity");
+        price = json.getFloat("price");
+        foilPrice = json.getFloat("foil_price");
     }
 
     public String getName() {
@@ -132,6 +147,25 @@ public class Card {
 
     public void setColors(JSONArray colors) {
         this.colors = colors;
+    }
+
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("name", name);
+        json.put("type", type);
+        json.put("set", set);
+        json.put("set_name", setName);
+        json.put("collector_number", collectorNumber);
+        json.put("image_url", imageUrl);
+        json.put("scryfall_uuid", scryfallUUID);
+        json.put("quantity", quantity);
+        json.put("foil_quantity", foilQuantity);
+        json.put("price", price);
+        json.put("foil_price", foilPrice);
+        json.put("colors", colors);
+
+        return json;
     }
 
     @Override

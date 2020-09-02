@@ -6,17 +6,12 @@ import java.awt.event.*;
 
 public class MainWindow extends JFrame implements ActionListener {
     private final String TITLE = "MTG Inventory Manager";
-    private final int WIDTH = 1000;
-    private final int HEIGHT = 800;
 
     private JMenuItem addCardMenuItem;
 
     public MainWindow() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle(TITLE);
-        this.setSize(WIDTH, HEIGHT);
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
 
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
@@ -25,6 +20,10 @@ public class MainWindow extends JFrame implements ActionListener {
         fileMenu.add(addCardMenuItem);
         menuBar.add(fileMenu);
         this.setJMenuBar(menuBar);
+
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     @Override
