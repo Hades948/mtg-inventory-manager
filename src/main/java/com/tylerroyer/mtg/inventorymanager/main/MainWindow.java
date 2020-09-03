@@ -56,6 +56,8 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         sortByColorMenuItem.addActionListener(this);
         sortMenu.add(sortByColorMenuItem);
 
+        sortMenu.add(new JSeparator());
+
         sortByQuantityMenuItem = new JMenuItem("By Quantity");
         sortByQuantityMenuItem.addActionListener(this);
         sortMenu.add(sortByQuantityMenuItem);
@@ -68,21 +70,23 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         sortByTotalQuantityMenuItem.addActionListener(this);
         sortMenu.add(sortByTotalQuantityMenuItem);
 
-        countUniqueCardsMenuItem = new JMenuItem("Count unique cards in inventory");
+        countUniqueCardsMenuItem = new JMenuItem("Number of unique cards");
         countUniqueCardsMenuItem.addActionListener(this);
         calculateMenu.add(countUniqueCardsMenuItem);
 
-        countTotalCardsMenuItem = new JMenuItem("Count total cards in inventory");
+        countTotalCardsMenuItem = new JMenuItem("Total number of cards");
         countTotalCardsMenuItem.addActionListener(this);
         calculateMenu.add(countTotalCardsMenuItem);
-        
-        getTotalValueMenuItem = new JMenuItem("Get total value of all cards");
-        getTotalValueMenuItem.addActionListener(this);
-        calculateMenu.add(getTotalValueMenuItem);
 
-        getAverageValueMenuItem = new JMenuItem("Get average card value");
+        calculateMenu.add(new JSeparator());
+        
+        getAverageValueMenuItem = new JMenuItem("Average value of all cards");
         getAverageValueMenuItem.addActionListener(this);
         calculateMenu.add(getAverageValueMenuItem);
+
+        getTotalValueMenuItem = new JMenuItem("Total value of all cards");
+        getTotalValueMenuItem.addActionListener(this);
+        calculateMenu.add(getTotalValueMenuItem);
 
         menuBar.add(actionsMenu);
         menuBar.add(sortMenu);
