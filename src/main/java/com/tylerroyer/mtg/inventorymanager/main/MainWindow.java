@@ -6,7 +6,6 @@ import com.tylerroyer.mtg.Card;
 
 import java.awt.event.*;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.Map.Entry;
 import java.awt.Color;
 import java.awt.Component;
@@ -16,7 +15,7 @@ import java.awt.BorderLayout;
 
 public class MainWindow extends JFrame implements ActionListener, KeyListener {
     private final String TITLE = "MTG Inventory Manager";
-    private final Dimension CARDS_PANEL_SIZE = new Dimension(1150, 801);
+    private final Dimension CARDS_PANEL_SIZE = new Dimension(1250, 801);
     private final HashMap<JButton, Card> editButtons = new HashMap<>();
 
     private JMenuItem addCardMenuItem;
@@ -36,6 +35,7 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle(TITLE);
         this.addKeyListener(this);
+        this.setLayout(new BorderLayout());
 
         JMenuBar menuBar = new JMenuBar();
         JMenu actionsMenu = new JMenu("Actions");
@@ -52,7 +52,7 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         refreshDataMenuItem.addActionListener(this);
         actionsMenu.add(refreshDataMenuItem);
 
-        sortByColorMenuItem = new JMenuItem("By color");
+        sortByColorMenuItem = new JMenuItem("By Color");
         sortByColorMenuItem.addActionListener(this);
         sortMenu.add(sortByColorMenuItem);
 
@@ -89,6 +89,10 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         menuBar.add(calculateMenu);
         this.setJMenuBar(menuBar);
 
+        JLabel headersLabel = new JLabel(Card.getHeader());
+        headersLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
+        this.add(headersLabel, BorderLayout.NORTH);
+
         this.setPreferredSize(CARDS_PANEL_SIZE);
         cardsPanel = new JPanel();
         cardsPanel.setLayout(new BoxLayout(cardsPanel, BoxLayout.Y_AXIS));
@@ -109,26 +113,36 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
             cardPanel.setOpaque(true);
 
             JLabel label = new JLabel(card.toString(), SwingConstants.LEFT);
-            label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            label.setBorder(BorderFactory.createLineBorder(Colors.BLACK));
 
             JButton editButton = new JButton("Edit");
             editButton.addActionListener(this);
             editButtons.put(editButton, card);
 
             Color cardColor = card.getColor();
-            if (cardColor == null) {
-                cardPanel.setBackground(Color.GRAY);
-                label.setForeground(Color.BLACK);
-            } else {
-                cardPanel.setBackground(cardColor);
-                if (cardColor == Color.BLACK || cardColor == Color.RED || cardColor == Color.BLUE) {
-                    label.setForeground(Color.WHITE);
-                    cardPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-                } else {
-                    label.setForeground(Color.BLACK);
-                    cardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            if (cardColor == Colors.MULTI) {
+                Color bg = Colors.stringToColor(card.getColors().getString(0));
+                Color fg = Colors.stringToColor(card.getColors().getString(1));
+
+                if (bg == Colors.RED && fg == Colors.BLUE) {
+                    fg = fg.brighter();
                 }
+                if (bg == Colors.GREEN && fg == Colors.RED || bg == Colors.GREEN && fg == Colors.BLUE) {
+                    fg = fg.darker();
+                }
+
+                cardPanel.setBackground(bg);
+                label.setForeground(fg);
+            } else {
+                if (cardColor == Colors.BLACK) {
+                    label.setForeground(Colors.WHITE);
+                } else {
+                    label.setForeground(Colors.BLACK);
+                }
+                cardPanel.setBackground(cardColor);
             }
+
+            cardPanel.setBorder(BorderFactory.createLineBorder(Colors.GREY));
 
             label.setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
             label.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -137,7 +151,7 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
             cardsPanel.add(cardPanel);
         }
 
-        this.add(scrollPane);
+        this.add(scrollPane, BorderLayout.CENTER);
         this.pack();
         this.setLocationRelativeTo(null);
     }

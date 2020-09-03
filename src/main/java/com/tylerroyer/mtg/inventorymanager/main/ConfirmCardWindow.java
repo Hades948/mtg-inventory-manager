@@ -111,11 +111,18 @@ public class ConfirmCardWindow extends JFrame implements ActionListener {
         if (e.getSource() == yesButton) {
             boolean foil = foilCheckBox.isSelected();
             int quantity = Integer.parseInt(quantityTextField.getText());
+
+            if (quantity <= 0) {
+                this.dispose();
+                return;
+            }
+
             if (foil) {
                 card.setFoilQuantity(quantity);
             } else {
                 card.setQuantity(quantity);
             }
+            
             Inventory.addCardToInventory(card, foil);
             parentWindow.refreshInventoryDisplay();
             parentWindow.scrollToBottom();

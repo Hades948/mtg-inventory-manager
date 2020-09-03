@@ -5,6 +5,8 @@ import org.json.JSONObject;
 
 import java.awt.Color;
 
+import com.tylerroyer.mtg.inventorymanager.main.Colors;
+
 public class Card {
     private String name;
     private String type;
@@ -143,23 +145,27 @@ public class Card {
     }
 
     public Color getColor() {
-        if (colors == null) return null;
-        if (colors.length() != 1) return null;
+        if (colors == null) return Colors.NONE;
 
-        String color = colors.getString(0);
-        if (color.equals("White")) {
-            return Color.WHITE;
-        } else if (color.equals("Blue")) {
-            return Color.BLUE;
-        } else if (color.equals("Black")) {
-            return Color.BLACK;
-        } else if (color.equals("Red")) {
-            return Color.RED;
-        } else if (color.equals("Green")) {
-            return Color.GREEN;
-        } else {
-            return null;
+        if (colors.length() == 1) {
+            String color = colors.getString(0);
+            if (color.equals("White")) {
+                return Colors.WHITE;
+            } else if (color.equals("Blue")) {
+                return Colors.BLUE;
+            } else if (color.equals("Black")) {
+                return Colors.BLACK;
+            } else if (color.equals("Red")) {
+                return Colors.RED;
+            } else if (color.equals("Green")) {
+                return Colors.GREEN;
+            }
+        } else if (colors.length() == 2) {
+            return Colors.MULTI;
         }
+
+        return Colors.NONE;
+        
     }
 
     public void setColors(JSONArray colors) {
@@ -189,12 +195,13 @@ public class Card {
         return quantity * price + foilQuantity * foilPrice;
     }
 
-    private final int NAME_WIDTH = 32;
-    private final int TYPE_WIDTH = 45;
-    private final int COLORS_WIDTH = 13;
-    private final int COLLECTOR_WIDTH = 11;
-    private final int QUANTITY_WIDTH = 5;
-    private final int VALUE_WIDTH = 8;
+    private static final int NAME_WIDTH = 32;
+    private static final int TYPE_WIDTH = 45;
+    private static final int COLORS_WIDTH = 13;
+    private static final int COLLECTOR_WIDTH = 15;
+    private static final int QUANTITY_WIDTH = 6;
+    private static final int FOIL_QUANTITY_WIDTH = 12;
+    private static final int VALUE_WIDTH = 11;
 
     @Override
     public String toString() {
@@ -245,7 +252,7 @@ public class Card {
 
         // Foil Quantity
         String sFoilQuantity = String.valueOf(foilQuantity);
-        while (sFoilQuantity.length() < QUANTITY_WIDTH) {
+        while (sFoilQuantity.length() < FOIL_QUANTITY_WIDTH) {
             sFoilQuantity += " ";
         }
         s += sFoilQuantity;
@@ -257,6 +264,63 @@ public class Card {
             valueS = " " + valueS;
         }
         valueS = "$ " + valueS;
+        s += valueS;
+
+        s += " ";
+
+        return s;
+    }
+
+    public static String getHeader() {
+        String s = " ";
+
+        // Name
+        String nameS = "Card Name";        
+        while (nameS.length() < NAME_WIDTH) {
+            nameS += " ";
+        }
+        s += nameS;
+
+        // Type
+        String typeS = "Card Type";
+        while (typeS.length() < TYPE_WIDTH) {
+            typeS += " ";
+        }
+        s += typeS;
+
+        // Colors
+        String colorsS = "Color";
+        while (colorsS.length() < COLORS_WIDTH) {
+            colorsS += " ";
+        }
+        s += colorsS;
+
+        // Set and Collector Number
+        String collectorS = "Collector #";
+        while (collectorS.length() < COLLECTOR_WIDTH) {
+            collectorS += " ";
+        }
+        s += collectorS;
+
+        // Quantity
+        String sQuantity = "Qty.";
+        while (sQuantity.length() < QUANTITY_WIDTH) {
+            sQuantity += " ";
+        }
+        s += sQuantity;
+
+        // Foil Quantity
+        String sFoilQuantity = "Foil Qty.";
+        while (sFoilQuantity.length() < FOIL_QUANTITY_WIDTH) {
+            sFoilQuantity += " ";
+        }
+        s += sFoilQuantity;
+
+        // Total value
+        String valueS = "Total value";
+        while (valueS.length() < VALUE_WIDTH) {
+            valueS = " " + valueS;
+        }
         s += valueS;
 
         s += " ";

@@ -46,25 +46,55 @@ public class Inventory {
                 ArrayList<Card> black = new ArrayList<>();
                 ArrayList<Card> red = new ArrayList<>();
                 ArrayList<Card> green = new ArrayList<>();
-                ArrayList<Card> mixed = new ArrayList<>();
+                ArrayList<Card> blueWhite = new ArrayList<>();
+                ArrayList<Card> blackWhite = new ArrayList<>();
+                ArrayList<Card> blackBlue = new ArrayList<>();
+                ArrayList<Card> blackRed = new ArrayList<>();
+                ArrayList<Card> blackGreen = new ArrayList<>();
+                ArrayList<Card> redWhite = new ArrayList<>();
+                ArrayList<Card> redBlue = new ArrayList<>();
+                ArrayList<Card> greenWhite = new ArrayList<>();
+                ArrayList<Card> greenBlue = new ArrayList<>();
+                ArrayList<Card> greenRed = new ArrayList<>();
                 ArrayList<Card> none = new ArrayList<>();
                 for (Card card : cards) {
-                    if (card.getColor() == null) {
-                        if (card.getColors().length() > 1) {
-                            mixed.add(card);
-                        } else {
-                            none.add(card);
-                        }
-                    } else if (card.getColor() == Color.WHITE) {
+                    if (card.getColor() == Colors.WHITE) {
                         white.add(card);
-                    } else if (card.getColor() == Color.BLUE) {
+                    } else if (card.getColor() == Colors.BLUE) {
                         blue.add(card);
-                    } else if (card.getColor() == Color.BLACK) {
+                    } else if (card.getColor() == Colors.BLACK) {
                         black.add(card);
-                    } else if (card.getColor() == Color.RED) {
+                    } else if (card.getColor() == Colors.RED) {
                         red.add(card);
-                    } else if (card.getColor() == Color.GREEN) {
+                    } else if (card.getColor() == Colors.GREEN) {
                         green.add(card);
+                    } else if (card.getColor() == Colors.MULTI) {
+                        String color1 = card.getColors().getString(0);
+                        String color2 = card.getColors().getString(1);
+                        if (color1.equals("Blue") && color2.equals("White")) {
+                            blueWhite.add(card);
+                        } else if (color1.equals("Black") && color2.equals("White")) {
+                            blackWhite.add(card);
+                        } else if (color1.equals("Black") && color2.equals("Blue")) {
+                            blackBlue.add(card);
+                        } else if (color1.equals("Black") && color2.equals("Red")) {
+                            blackRed.add(card);
+                        } else if (color1.equals("Black") && color2.equals("Green")) {
+                            blackGreen.add(card);
+                        } else if (color1 .equals("Red") && color2.equals("White")) {
+                            redWhite.add(card);
+                        } else if (color1.equals("Red") && color2.equals("Blue")) {
+                            redBlue.add(card);
+                        } else if (color1.equals("Green") && color2.equals("White")) {
+                            greenWhite.add(card);
+                        } else if (color1.equals("Green") && color2.equals("Blue")) {
+                            greenBlue.add(card);
+                        } else if (color1.equals("Green") && color2.equals("Red")) {
+                            greenRed.add(card);
+                        } else {
+                            System.err.println("Unrecognized multi-color: " + color1 + "/" + color2);
+                            none.add(0, card);
+                        }
                     } else {
                         none.add(card);
                     }
@@ -75,7 +105,16 @@ public class Inventory {
                 cards.addAll(black);
                 cards.addAll(red);
                 cards.addAll(green);
-                cards.addAll(mixed);
+                cards.addAll(blueWhite);
+                cards.addAll(blackWhite);
+                cards.addAll(blackBlue);
+                cards.addAll(blackRed);
+                cards.addAll(blackGreen);
+                cards.addAll(redWhite);
+                cards.addAll(redBlue);
+                cards.addAll(greenWhite);
+                cards.addAll(greenBlue);
+                cards.addAll(greenRed);
                 cards.addAll(none);
                 break;
             

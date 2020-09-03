@@ -134,11 +134,16 @@ public class Scryfall {
 
         // Prices
         JSONObject prices = data.getJSONObject("prices");
-        card.setPrice(prices.getFloat("usd"));
+        try {
+            card.setPrice(prices.getFloat("usd"));
+        } catch (JSONException e) {
+            System.out.println("No price listed.  Ignoring.");
+            card.setPrice(0.0f);
+        }
         try {
             card.setFoilPrice(prices.getFloat("usd_foil"));
         } catch (JSONException e) {
-            e.printStackTrace();
+            System.out.println("No foil price listed.  Ignoring.");
             card.setFoilPrice(0.0f);
         }
 
