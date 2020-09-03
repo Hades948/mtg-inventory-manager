@@ -16,7 +16,7 @@ import java.awt.BorderLayout;
 
 public class MainWindow extends JFrame implements ActionListener, KeyListener {
     private final String TITLE = "MTG Inventory Manager";
-    private final Dimension CARDS_PANEL_SIZE = new Dimension(1100, 801);
+    private final Dimension CARDS_PANEL_SIZE = new Dimension(1150, 801);
     private final HashMap<JButton, Card> editButtons = new HashMap<>();
 
     private JMenuItem addCardMenuItem;

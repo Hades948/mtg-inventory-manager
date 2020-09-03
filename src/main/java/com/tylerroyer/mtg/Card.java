@@ -190,7 +190,7 @@ public class Card {
     }
 
     private final int NAME_WIDTH = 32;
-    private final int TYPE_WIDTH = 40;
+    private final int TYPE_WIDTH = 45;
     private final int COLORS_WIDTH = 13;
     private final int COLLECTOR_WIDTH = 11;
     private final int QUANTITY_WIDTH = 5;
