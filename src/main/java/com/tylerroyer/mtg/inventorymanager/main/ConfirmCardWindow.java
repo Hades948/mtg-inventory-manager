@@ -58,7 +58,7 @@ public class ConfirmCardWindow extends JFrame implements ActionListener {
         this.add(topPanel, BorderLayout.NORTH);
         this.add(loadingLabel, BorderLayout.CENTER);
 
-        Scryfall.getCard(this, rawCardInfo);
+        new GetCardThread(this, rawCardInfo).start();
 
         this.setTitle(TITLE);
         this.pack();
@@ -116,8 +116,9 @@ public class ConfirmCardWindow extends JFrame implements ActionListener {
             } else {
                 card.setQuantity(quantity);
             }
-            Inventory.addCardToInventory(card, foil); // TODO Implement foils
-            parentWindow.displayInventory();
+            Inventory.addCardToInventory(card, foil);
+            parentWindow.refreshInventoryDisplay();
+            parentWindow.scrollToBottom();
             this.dispose();
         } else if (e.getSource() == noButton || e.getSource() == okButton) {
             this.dispose();

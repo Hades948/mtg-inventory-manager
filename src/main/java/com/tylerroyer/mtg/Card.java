@@ -31,6 +31,7 @@ public class Card {
         foilQuantity = 0;
         price = 0.0f;
         foilPrice = 0.0f;
+        
     }
 
     public Card(JSONObject json) {
@@ -46,6 +47,7 @@ public class Card {
         price = json.getFloat("price");
         foilPrice = json.getFloat("foil_price");
         colors = json.getJSONArray("colors");
+        
     }
 
     public String getName() {
@@ -112,20 +114,12 @@ public class Card {
         this.quantity = quantity;
     }
 
-    public void incrementQuantity() {
-        quantity++;
-    }
-
     public int getFoilQuantity() {
         return foilQuantity;
     }
 
     public void setFoilQuantity(int foilQuantity) {
         this.foilQuantity = foilQuantity;
-    }
-
-    public void incrementFoilQuantity() {
-        foilQuantity++;
     }
 
     public float getPrice() {

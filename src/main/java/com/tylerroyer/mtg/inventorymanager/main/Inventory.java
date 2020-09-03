@@ -152,7 +152,7 @@ public class Inventory {
         }
     }
 
-    private static void saveCard(Card card) {
+    public static void saveCard(Card card) {
         try (BufferedWriter out = new BufferedWriter(new FileWriter("./cards/" + card.getScryfallUUID() + ".dat"))) {
             out.write(card.toJSON().toString());
         } catch (Exception e) {e.printStackTrace();}
