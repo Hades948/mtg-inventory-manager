@@ -19,6 +19,10 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
     private JMenuItem countTotalCardsMenuItem;
     private JMenuItem getTotalValueMenuItem;
     private JMenuItem getAverageValueMenuItem;
+    private JMenuItem sortByColorMenuItem;
+    private JMenuItem sortByQuantityMenuItem;
+    private JMenuItem sortByFoilQuantityMenuItem;
+    private JMenuItem sortByTotalQuantityMenuItem;
     private JPanel cardsPanel;
     private JScrollPane scrollPane;
 
@@ -28,14 +32,31 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         this.addKeyListener(this);
 
         JMenuBar menuBar = new JMenuBar();
-        JMenu fileMenu = new JMenu("File");
+        JMenu actionsMenu = new JMenu("Actions");
+        JMenu sortMenu = new JMenu("Sort");
         JMenu calculateMenu = new JMenu("Calculate");
         
-        addCardMenuItem = new JMenuItem("Add new card to inventory...");
+        addCardMenuItem = new JMenuItem("Add a new card to inventory...");
         addCardMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
         addCardMenuItem.setMnemonic(KeyEvent.VK_N);
         addCardMenuItem.addActionListener(this);
-        fileMenu.add(addCardMenuItem);
+        actionsMenu.add(addCardMenuItem);
+
+        sortByColorMenuItem = new JMenuItem("By color");
+        sortByColorMenuItem.addActionListener(this);
+        sortMenu.add(sortByColorMenuItem);
+
+        sortByQuantityMenuItem = new JMenuItem("By Quantity");
+        sortByQuantityMenuItem.addActionListener(this);
+        sortMenu.add(sortByQuantityMenuItem);
+
+        sortByFoilQuantityMenuItem = new JMenuItem("By Foil Quantity");
+        sortByFoilQuantityMenuItem.addActionListener(this);
+        sortMenu.add(sortByFoilQuantityMenuItem);
+
+        sortByTotalQuantityMenuItem = new JMenuItem("By Total Quantity");
+        sortByTotalQuantityMenuItem.addActionListener(this);
+        sortMenu.add(sortByTotalQuantityMenuItem);
 
         countUniqueCardsMenuItem = new JMenuItem("Count unique cards in inventory");
         countUniqueCardsMenuItem.addActionListener(this);
@@ -53,7 +74,8 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         getAverageValueMenuItem.addActionListener(this);
         calculateMenu.add(getAverageValueMenuItem);
 
-        menuBar.add(fileMenu);
+        menuBar.add(actionsMenu);
+        menuBar.add(sortMenu);
         menuBar.add(calculateMenu);
         this.setJMenuBar(menuBar);
 
@@ -71,7 +93,22 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         cardsPanel.setLayout(new BoxLayout(cardsPanel, BoxLayout.Y_AXIS));
         for (Card card : Inventory.getCards()) {
             JLabel label = new JLabel(card.toString(), SwingConstants.LEFT);
+            label.setOpaque(true);
             label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            Color cardColor = card.getColor();
+            if (cardColor == null) {
+                label.setBackground(Color.GRAY);
+                label.setForeground(Color.BLACK);
+            } else {
+                label.setBackground(cardColor);
+                if (cardColor == Color.BLACK || cardColor == Color.RED || cardColor == Color.BLUE) {
+                    label.setForeground(Color.WHITE);
+                    label.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+                } else {
+                    label.setForeground(Color.BLACK);
+                    label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                }
+            }
             label.setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
             label.setAlignmentX(Component.LEFT_ALIGNMENT);
             cardsPanel.add(label);
@@ -103,6 +140,22 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
             if (response != null) {
                 new ConfirmCardWindow(this, response);
             }
+        } else if (e.getSource() == sortByColorMenuItem) {
+            Inventory.sort(Inventory.SortType.BY_COLOR);
+            displayInventory();
+            scrollToTop();
+        } else if (e.getSource() == sortByQuantityMenuItem) {
+            Inventory.sort(Inventory.SortType.BY_QUANTITY);
+            displayInventory();
+            scrollToTop();
+        } else if (e.getSource() == sortByFoilQuantityMenuItem) {
+            Inventory.sort(Inventory.SortType.BY_FOIL_QUANTITY);
+            displayInventory();
+            scrollToTop();
+        } else if (e.getSource() == sortByTotalQuantityMenuItem) {
+            Inventory.sort(Inventory.SortType.BY_TOTAL_QUANTITY);
+            displayInventory();
+            scrollToTop();
         } else if (e.getSource() == countUniqueCardsMenuItem) {
             String message = "You have " + Inventory.getNumberOfUniqueCards() + " unique cards in your inventory.";
             String title = "Unique Card Count";

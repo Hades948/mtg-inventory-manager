@@ -74,6 +74,9 @@ public class ConfirmCardWindow extends JFrame implements ActionListener {
             okButton = new JButton("Okay");
             okButton.addActionListener(this);
             this.add(okButton, BorderLayout.CENTER);
+            
+            this.getRootPane().setDefaultButton(okButton);
+            okButton.requestFocus();
         } else {
             statusLabel.setText(" Is this the correct card?");
             loadingLabel.setText(" Loading...");

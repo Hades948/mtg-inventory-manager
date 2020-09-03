@@ -3,6 +3,8 @@ package com.tylerroyer.mtg;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.awt.Color;
+
 public class Card {
     private String name;
     private String type;
@@ -144,6 +146,26 @@ public class Card {
 
     public JSONArray getColors() {
         return colors;
+    }
+
+    public Color getColor() {
+        if (colors == null) return null;
+        if (colors.length() != 1) return null;
+
+        String color = colors.getString(0);
+        if (color.equals("White")) {
+            return Color.WHITE;
+        } else if (color.equals("Blue")) {
+            return Color.BLUE;
+        } else if (color.equals("Black")) {
+            return Color.BLACK;
+        } else if (color.equals("Red")) {
+            return Color.RED;
+        } else if (color.equals("Green")) {
+            return Color.GREEN;
+        } else {
+            return null;
+        }
     }
 
     public void setColors(JSONArray colors) {
