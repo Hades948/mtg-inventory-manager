@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 public class Inventory {
     public static enum SortType {
-        BY_COLLECTOR_NUMBER, BY_COLOR, BY_QUANTITY, BY_FOIL_QUANTITY, BY_TOTAL_QUANTITY, BY_TOTAL_VALUE
+        BY_NAME, BY_TYPE, BY_COLLECTOR_NUMBER, BY_COLOR, BY_QUANTITY, BY_FOIL_QUANTITY, BY_TOTAL_QUANTITY, BY_TOTAL_VALUE
     }
 
     private static ArrayList<Card> cards;
@@ -39,6 +39,44 @@ public class Inventory {
     public static void sort(SortType sortType) {
         switch (sortType) {
             default:
+            case BY_NAME:
+                ArrayList<Card> sortedByName = new ArrayList<>();
+                for (Card card : cards) {
+                    String unsortedName = card.getName();
+                    int index = sortedByName.size();
+                    for (int i = 0; i < sortedByName.size(); i++) {
+                        String sortedName = sortedByName.get(i).getName();
+                        if (unsortedName.compareTo(sortedName) < 0) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    sortedByName.add(index, card);
+                }
+
+                cards.clear();
+                cards.addAll(sortedByName);
+                break;
+
+            case BY_TYPE:
+                ArrayList<Card> sortedByType = new ArrayList<>();
+                for (Card card : cards) {
+                    String unsortedType = card.getType();
+                    int index = sortedByType.size();
+                    for (int i = 0; i < sortedByType.size(); i++) {
+                        String sortedType = sortedByType.get(i).getType();
+                        if (unsortedType.compareTo(sortedType) < 0) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    sortedByType.add(index, card);
+                }
+
+                cards.clear();
+                cards.addAll(sortedByType);
+                break;
+                
             case BY_COLLECTOR_NUMBER:
                 ArrayList<Card> sortedByCollectorNumber = new ArrayList<>();
                 for (Card card : cards) {
@@ -57,6 +95,7 @@ public class Inventory {
                 cards.clear();
                 cards.addAll(sortedByCollectorNumber);
                 break;
+                
             case BY_COLOR:
                 ArrayList<Card> white = new ArrayList<>();
                 ArrayList<Card> blue = new ArrayList<>();

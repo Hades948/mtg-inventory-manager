@@ -25,6 +25,8 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
     private JMenuItem countTotalCardsMenuItem;
     private JMenuItem getTotalValueMenuItem;
     private JMenuItem getAverageValueMenuItem;
+    private JMenuItem sortByNameMenuItem;
+    private JMenuItem sortByTypeMenuItem;
     private JMenuItem sortByCollectorNumberMenuItem;
     private JMenuItem sortByColorMenuItem;
     private JMenuItem sortByQuantityMenuItem;
@@ -54,6 +56,14 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         refreshDataMenuItem = new JMenuItem("Refresh all card data");
         refreshDataMenuItem.addActionListener(this);
         actionsMenu.add(refreshDataMenuItem);
+
+        sortByNameMenuItem = new JMenuItem("By Name");
+        sortByNameMenuItem.addActionListener(this);
+        sortMenu.add(sortByNameMenuItem);
+
+        sortByTypeMenuItem = new JMenuItem("By Type");
+        sortByTypeMenuItem.addActionListener(this);
+        sortMenu.add(sortByTypeMenuItem);
 
         sortByCollectorNumberMenuItem = new JMenuItem("By Collector #");
         sortByCollectorNumberMenuItem.addActionListener(this);
@@ -224,6 +234,14 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
             }
         } else if (e.getSource() == refreshDataMenuItem) {
             new RefreshCardsWindow(this);
+        } else if (e.getSource() == sortByNameMenuItem) {
+            Inventory.sort(Inventory.SortType.BY_NAME);
+            refreshInventoryDisplay();
+            scrollToTop();
+        } else if (e.getSource() == sortByTypeMenuItem) {
+            Inventory.sort(Inventory.SortType.BY_TYPE);
+            refreshInventoryDisplay();
+            scrollToTop();
         } else if (e.getSource() == sortByCollectorNumberMenuItem) {
             Inventory.sort(Inventory.SortType.BY_COLLECTOR_NUMBER);
             refreshInventoryDisplay();
