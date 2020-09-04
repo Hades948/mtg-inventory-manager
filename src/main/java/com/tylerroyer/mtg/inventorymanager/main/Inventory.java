@@ -248,12 +248,12 @@ public class Inventory {
         }
     }
 
-    public static void addCardToInventory(Card newCard, boolean isFoil) {
+    public static void addCard(Card newCard, boolean isFoil) {
         int index = findCard(newCard.getScryfallUUID());
 
         if (index == -1) { // New card
             if (isFoil) {
-                newCard.setFoilQuantity(newCard.getFoilQuantity());
+                newCard.setFoilQuantity(newCard.getFoilQuantity()); // TODO This is redundant.  Why am I doing this?
             } else {
                 newCard.setQuantity(newCard.getQuantity());
             }
@@ -267,6 +267,13 @@ public class Inventory {
             }
             saveCard(cards.get(index));
         }
+    }
+
+    public static void removeCard(Card card) {
+        cards.remove(card);
+
+        File file = new File("./cards/" + card.getScryfallUUID() + ".dat");
+        file.delete();
     }
 
     public static void saveCard(Card card) {

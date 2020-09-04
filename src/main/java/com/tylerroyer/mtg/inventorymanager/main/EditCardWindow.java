@@ -3,6 +3,7 @@ package com.tylerroyer.mtg.inventorymanager.main;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
@@ -97,6 +98,17 @@ public class EditCardWindow extends JFrame implements ActionListener {
             newFoilQuantity++;
             foilQuantityLabel.setText("Foil Quantity: " + newFoilQuantity);
         } else if (e.getSource() == okButton) {
+            if (newQuantity + newFoilQuantity == 0) {
+                int result = JOptionPane.showConfirmDialog(this, "This card now has a total quantity of zero.  Would you like to remove the entry from your inventory?", "Remove Card?",
+                                                JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) {
+                    Inventory.removeCard(card);
+                    parentWindow.refreshInventoryDisplay();
+                    this.dispose();
+                    return;
+                }
+            }
+
             card.setQuantity(newQuantity);
             card.setFoilQuantity(newFoilQuantity);
             Inventory.saveCard(card);

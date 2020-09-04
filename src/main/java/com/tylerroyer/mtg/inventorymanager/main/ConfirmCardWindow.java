@@ -131,7 +131,7 @@ public class ConfirmCardWindow extends JFrame implements ActionListener {
                 card.setQuantity(quantity);
             }
             
-            Inventory.addCardToInventory(card, foil);
+            Inventory.addCard(card, foil);
             parentWindow.refreshInventoryDisplay();
             parentWindow.scrollToBottom();
             this.dispose();
