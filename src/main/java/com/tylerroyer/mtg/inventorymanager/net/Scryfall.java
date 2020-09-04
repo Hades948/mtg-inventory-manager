@@ -129,7 +129,14 @@ public class Scryfall {
         }
         card.setCollectorNumber(collectorNum);
         
-        card.setImageUrl(data.getJSONObject("image_uris").getString("normal"));
+        // Image
+        try {
+            card.setImageUrl(data.getJSONObject("image_uris").getString("normal"));
+        } catch (JSONException e) {
+            System.out.println("No image found.");
+            card.setImageUrl(null);
+        }
+        
         card.setScryfallUUID(data.getString("id"));
 
         // Prices
@@ -148,27 +155,35 @@ public class Scryfall {
         }
 
         // Colors
-        JSONArray shortColors = data.getJSONArray("colors");
-        JSONArray longColors = new JSONArray();
-        for (int i = 0; i < shortColors.length(); i++) {
-            if (shortColors.get(i).equals("W")) {
-                longColors.put("White");
-            } else if (shortColors.get(i).equals("U")) {
-                longColors.put("Blue");
-            } else if (shortColors.get(i).equals("B")) {
-                longColors.put("Black");
-            } else if (shortColors.get(i).equals("R")) {
-                longColors.put("Red");
-            } else if (shortColors.get(i).equals("G")) {
-                longColors.put("Green");
-            } else {
-                longColors.put("Unkn.");
+        try {
+            JSONArray shortColors = data.getJSONArray("colors");
+            JSONArray longColors = new JSONArray();
+            for (int i = 0; i < shortColors.length(); i++) {
+                if (shortColors.get(i).equals("W")) {
+                    longColors.put("White");
+                } else if (shortColors.get(i).equals("U")) {
+                    longColors.put("Blue");
+                } else if (shortColors.get(i).equals("B")) {
+                    longColors.put("Black");
+                } else if (shortColors.get(i).equals("R")) {
+                    longColors.put("Red");
+                } else if (shortColors.get(i).equals("G")) {
+                    longColors.put("Green");
+                } else {
+                    longColors.put("Unknown");
+                }
             }
+            if (shortColors.length() == 0) {
+                longColors.put("None");
+            }
+            card.setColors(longColors);
+        } catch (JSONException e) {
+            System.out.println("Colors not found.");
+            JSONArray unknown = new JSONArray();
+            unknown.put("Unknown");
+            card.setColors(unknown);
         }
-        if (shortColors.length() == 0) {
-            longColors.put("None");
-        }
-        card.setColors(longColors);
+        
 
         return true;
     }

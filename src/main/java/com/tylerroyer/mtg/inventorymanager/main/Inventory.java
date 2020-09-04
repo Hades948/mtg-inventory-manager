@@ -24,6 +24,10 @@ public class Inventory {
 
     public static void loadInventory() {
         File dir = new File("./cards");
+        // Create cards directory if it doesn't exist.
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
         for (File file : dir.listFiles()) {
             try (Scanner scanner = new Scanner(new FileReader(file))) {
                 String data = "";

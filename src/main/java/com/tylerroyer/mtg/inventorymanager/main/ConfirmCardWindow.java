@@ -81,9 +81,20 @@ public class ConfirmCardWindow extends JFrame implements ActionListener {
             loadingLabel.setText(" Loading...");
 
             try {
-                BufferedImage cardImage = ImageIO.read(new URL(card.getImageUrl()));
-                this.remove(loadingLabel);
-                this.add(new JLabel(new ImageIcon(cardImage)), BorderLayout.CENTER);
+                if (card.getImageUrl() == null) {
+                    loadingLabel.setText("<html>Image not found.<br>"
+                                             + "Here are all of the card details instead:<br>"
+                                             + "Name: " + card.getName() + "<br>"
+                                             + "Type: " + card.getType() + "<br>"
+                                             + "Set: " + card.getSetName() + "<br>"
+                                             + "Collector #: " + card.getCollectorNumber() + "<br>"
+                                             + "Colors: " + card.getColors()
+                                             + "</html>");
+                } else {
+                    BufferedImage cardImage = ImageIO.read(new URL(card.getImageUrl()));
+                    this.remove(loadingLabel);
+                    this.add(new JLabel(new ImageIcon(cardImage)), BorderLayout.CENTER);
+                }
             } catch (IOException e) {e.printStackTrace();}
 
             JPanel optionsPanel = new JPanel();
