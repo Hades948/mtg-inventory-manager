@@ -12,8 +12,6 @@ import java.awt.event.*;
 import com.tylerroyer.mtg.Card;
 
 public class EditCardWindow extends JFrame implements ActionListener {
-    private final String TITLE = "Edit Card";
-
     private int newQuantity, newFoilQuantity;
 
     private JButton decrementQuantityButton, incrementQuantityButton;
@@ -72,7 +70,7 @@ public class EditCardWindow extends JFrame implements ActionListener {
         this.add(quantitiesPanel, BorderLayout.CENTER);
         this.add(optionsPanel, BorderLayout.SOUTH);
 
-        this.setTitle(TITLE);
+        this.setTitle("Edit Card: " + card.getName());
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);

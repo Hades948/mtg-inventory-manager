@@ -15,7 +15,8 @@ import java.awt.BorderLayout;
 
 public class MainWindow extends JFrame implements ActionListener, KeyListener {
     private final String TITLE = "MTG Inventory Manager";
-    private final Dimension CARDS_PANEL_SIZE = new Dimension(1250, 801);
+    private final Dimension CARDS_PANEL_SIZE = new Dimension(1315, 801);
+    private final HashMap<JButton, Card> viewButtons = new HashMap<>();
     private final HashMap<JButton, Card> editButtons = new HashMap<>();
 
     private JMenuItem addCardMenuItem;
@@ -116,15 +117,19 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
 
     public void refreshInventoryDisplay() {
         cardsPanel.removeAll();
+        viewButtons.clear();
         editButtons.clear();
 
         for (Card card : Inventory.getCards()) {
-            JPanel cardPanel = new JPanel();
-            cardPanel.setLayout(new BorderLayout());
+            JPanel cardPanel = new JPanel(new BorderLayout());
             cardPanel.setOpaque(true);
 
             JLabel label = new JLabel(card.toString(), SwingConstants.LEFT);
             label.setBorder(BorderFactory.createLineBorder(Colors.BLACK));
+
+            JButton viewButton = new JButton("View");
+            viewButton.addActionListener(this);
+            viewButtons.put(viewButton, card);
 
             JButton editButton = new JButton("Edit");
             editButton.addActionListener(this);
@@ -155,10 +160,14 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
 
             cardPanel.setBorder(BorderFactory.createLineBorder(Colors.GREY));
 
+            JPanel buttonsPanel = new JPanel(new BorderLayout(1, 0));
+            buttonsPanel.add(viewButton, BorderLayout.WEST);
+            buttonsPanel.add(editButton, BorderLayout.EAST);
+
             label.setFont(new Font(Font.MONOSPACED, Font.BOLD, 14));
             label.setAlignmentX(Component.LEFT_ALIGNMENT);
             cardPanel.add(label, BorderLayout.CENTER);
-            cardPanel.add(editButton, BorderLayout.EAST);
+            cardPanel.add(buttonsPanel, BorderLayout.EAST);
             cardsPanel.add(cardPanel);
         }
 
@@ -179,6 +188,15 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        // View buttons
+        for (Entry<JButton, Card> entry : viewButtons.entrySet()) {
+            if (e.getSource() == entry.getKey()) {
+                new ViewCardWindow(entry.getValue());
+
+                return;
+            }
+        }
+
         // Edit buttons
         for (Entry<JButton, Card> entry : editButtons.entrySet()) {
             if (e.getSource() == entry.getKey()) {

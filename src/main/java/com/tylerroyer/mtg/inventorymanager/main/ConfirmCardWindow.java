@@ -3,7 +3,6 @@ package com.tylerroyer.mtg.inventorymanager.main;
 import javax.swing.*;
 
 import com.tylerroyer.mtg.Card;
-import com.tylerroyer.mtg.inventorymanager.net.Scryfall;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
