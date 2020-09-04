@@ -275,14 +275,14 @@ public class Card {
         String s = " ";
 
         // Name
-        String nameS = "Card Name";        
+        String nameS = "Name";        
         while (nameS.length() < NAME_WIDTH) {
             nameS += " ";
         }
         s += nameS;
 
         // Type
-        String typeS = "Card Type";
+        String typeS = "Type";
         while (typeS.length() < TYPE_WIDTH) {
             typeS += " ";
         }

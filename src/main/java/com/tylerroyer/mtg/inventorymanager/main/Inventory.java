@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 public class Inventory {
     public static enum SortType {
-        BY_COLOR, BY_QUANTITY, BY_FOIL_QUANTITY, BY_TOTAL_QUANTITY, BY_TOTAL_VALUE
+        BY_COLLECTOR_NUMBER, BY_COLOR, BY_QUANTITY, BY_FOIL_QUANTITY, BY_TOTAL_QUANTITY, BY_TOTAL_VALUE
     }
 
     private static ArrayList<Card> cards;
@@ -39,6 +39,24 @@ public class Inventory {
     public static void sort(SortType sortType) {
         switch (sortType) {
             default:
+            case BY_COLLECTOR_NUMBER:
+                ArrayList<Card> sortedByCollectorNumber = new ArrayList<>();
+                for (Card card : cards) {
+                    String unsortedNumber = card.getSet() + " " + card.getCollectorNumber();
+                    int index = sortedByCollectorNumber.size();
+                    for (int i = 0; i < sortedByCollectorNumber.size(); i++) {
+                        String sortedNumber = sortedByCollectorNumber.get(i).getSet() + " " + sortedByCollectorNumber.get(i).getCollectorNumber();
+                        if (unsortedNumber.compareTo(sortedNumber) < 0) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    sortedByCollectorNumber.add(index, card);
+                }
+
+                cards.clear();
+                cards.addAll(sortedByCollectorNumber);
+                break;
             case BY_COLOR:
                 ArrayList<Card> white = new ArrayList<>();
                 ArrayList<Card> blue = new ArrayList<>();

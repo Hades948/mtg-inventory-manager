@@ -25,6 +25,7 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
     private JMenuItem countTotalCardsMenuItem;
     private JMenuItem getTotalValueMenuItem;
     private JMenuItem getAverageValueMenuItem;
+    private JMenuItem sortByCollectorNumberMenuItem;
     private JMenuItem sortByColorMenuItem;
     private JMenuItem sortByQuantityMenuItem;
     private JMenuItem sortByFoilQuantityMenuItem;
@@ -53,6 +54,12 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         refreshDataMenuItem = new JMenuItem("Refresh all card data");
         refreshDataMenuItem.addActionListener(this);
         actionsMenu.add(refreshDataMenuItem);
+
+        sortByCollectorNumberMenuItem = new JMenuItem("By Collector #");
+        sortByCollectorNumberMenuItem.addActionListener(this);
+        sortMenu.add(sortByCollectorNumberMenuItem);
+
+        sortMenu.add(new JSeparator());
 
         sortByColorMenuItem = new JMenuItem("By Color");
         sortByColorMenuItem.addActionListener(this);
@@ -110,6 +117,7 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         cardsPanel.setLayout(new BoxLayout(cardsPanel, BoxLayout.Y_AXIS));
         scrollPane = new JScrollPane(cardsPanel);
         scrollPane.getVerticalScrollBar().setUnitIncrement(10);
+        Inventory.sort(Inventory.SortType.BY_COLLECTOR_NUMBER);
         refreshInventoryDisplay();
         this.setVisible(true);
         scrollToTop();
@@ -216,6 +224,10 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
             }
         } else if (e.getSource() == refreshDataMenuItem) {
             new RefreshCardsWindow(this);
+        } else if (e.getSource() == sortByCollectorNumberMenuItem) {
+            Inventory.sort(Inventory.SortType.BY_COLLECTOR_NUMBER);
+            refreshInventoryDisplay();
+            scrollToTop();
         } else if (e.getSource() == sortByColorMenuItem) {
             Inventory.sort(Inventory.SortType.BY_COLOR);
             refreshInventoryDisplay();
