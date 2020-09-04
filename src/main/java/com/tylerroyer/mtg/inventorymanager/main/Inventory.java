@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.awt.Color;
 
 import com.tylerroyer.mtg.Card;
 
@@ -14,7 +13,7 @@ import org.json.JSONObject;
 
 public class Inventory {
     public static enum SortType {
-        BY_COLOR, BY_QUANTITY, BY_FOIL_QUANTITY, BY_TOTAL_QUANTITY
+        BY_COLOR, BY_QUANTITY, BY_FOIL_QUANTITY, BY_TOTAL_QUANTITY, BY_TOTAL_VALUE
     }
 
     private static ArrayList<Card> cards;
@@ -134,6 +133,7 @@ public class Inventory {
                 cards.clear();
                 cards.addAll(sortedByQuantity);
                 break;
+
             case BY_FOIL_QUANTITY:
                 ArrayList<Card> sortedByFoilQuantity = new ArrayList<>();
                 for (Card card : cards) {
@@ -150,6 +150,7 @@ public class Inventory {
                 cards.clear();
                 cards.addAll(sortedByFoilQuantity);
                 break;
+
             case BY_TOTAL_QUANTITY:
                 ArrayList<Card> sortedByTotalQuantity = new ArrayList<>();
                 for (Card card : cards) {
@@ -166,6 +167,22 @@ public class Inventory {
 
                 cards.clear();
                 cards.addAll(sortedByTotalQuantity);
+                break;
+            case BY_TOTAL_VALUE:
+                ArrayList<Card> sortedByTotalValue = new ArrayList<>();
+                for (Card card : cards) {
+                    int index = sortedByTotalValue.size();
+                    for (int i = 0; i < sortedByTotalValue.size(); i++) {
+                        if (sortedByTotalValue.get(i).getTotalValue() < card.getTotalValue()) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    sortedByTotalValue.add(index, card);
+                }
+
+                cards.clear();
+                cards.addAll(sortedByTotalValue);
                 break;
         }
     }

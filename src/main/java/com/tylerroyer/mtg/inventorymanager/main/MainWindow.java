@@ -28,6 +28,7 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
     private JMenuItem sortByQuantityMenuItem;
     private JMenuItem sortByFoilQuantityMenuItem;
     private JMenuItem sortByTotalQuantityMenuItem;
+    private JMenuItem sortByTotalValueMenuItem;
     private JPanel cardsPanel;
     private JScrollPane scrollPane;
 
@@ -69,6 +70,12 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         sortByTotalQuantityMenuItem = new JMenuItem("By Total Quantity");
         sortByTotalQuantityMenuItem.addActionListener(this);
         sortMenu.add(sortByTotalQuantityMenuItem);
+
+        sortMenu.add(new JSeparator());
+
+        sortByTotalValueMenuItem = new JMenuItem("By Total Value");
+        sortByTotalValueMenuItem.addActionListener(this);
+        sortMenu.add(sortByTotalValueMenuItem);
 
         countUniqueCardsMenuItem = new JMenuItem("Number of unique cards");
         countUniqueCardsMenuItem.addActionListener(this);
@@ -205,6 +212,10 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
             scrollToTop();
         } else if (e.getSource() == sortByTotalQuantityMenuItem) {
             Inventory.sort(Inventory.SortType.BY_TOTAL_QUANTITY);
+            refreshInventoryDisplay();
+            scrollToTop();
+        } else if (e.getSource() == sortByTotalValueMenuItem) {
+            Inventory.sort(Inventory.SortType.BY_TOTAL_VALUE);
             refreshInventoryDisplay();
             scrollToTop();
         } else if (e.getSource() == countUniqueCardsMenuItem) {
