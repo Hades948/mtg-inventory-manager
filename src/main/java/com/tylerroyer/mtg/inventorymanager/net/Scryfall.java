@@ -134,7 +134,7 @@ public class Scryfall {
             card.setImageUrl(data.getJSONObject("image_uris").getString("normal"));
         } catch (JSONException e) {
             System.out.println("No image found.");
-            card.setImageUrl(null);
+            card.setImageUrl("null");
         }
         
         card.setScryfallUUID(data.getString("id"));

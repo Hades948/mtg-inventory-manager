@@ -4,6 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 import com.tylerroyer.mtg.inventorymanager.main.Colors;
 
@@ -33,7 +40,7 @@ public class Card {
         foilQuantity = 0;
         price = 0.0f;
         foilPrice = 0.0f;
-        
+
     }
 
     public Card(JSONObject json) {
@@ -49,7 +56,7 @@ public class Card {
         price = json.getFloat("price");
         foilPrice = json.getFloat("foil_price");
         colors = json.getJSONArray("colors");
-        
+
     }
 
     public String getName() {
@@ -145,7 +152,8 @@ public class Card {
     }
 
     public Color getColor() {
-        if (colors == null) return Colors.NONE;
+        if (colors == null)
+            return Colors.NONE;
 
         if (colors.length() == 1) {
             String color = colors.getString(0);
@@ -165,7 +173,7 @@ public class Card {
         }
 
         return Colors.NONE;
-        
+
     }
 
     public void setColors(JSONArray colors) {
@@ -193,6 +201,20 @@ public class Card {
 
     public float getTotalValue() {
         return quantity * price + foilQuantity * foilPrice;
+    }
+
+    public ImageIcon getImage() {
+        if (!imageUrl.equals("null")) {
+            try {
+                BufferedImage cardImage = ImageIO.read(new URL(imageUrl));
+                return new ImageIcon(cardImage);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     private static final int NAME_WIDTH = 32;
