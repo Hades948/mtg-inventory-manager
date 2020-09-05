@@ -222,8 +222,10 @@ public class Card {
     private static final int COLORS_WIDTH = 13;
     private static final int COLLECTOR_WIDTH = 15;
     private static final int QUANTITY_WIDTH = 6;
-    private static final int FOIL_QUANTITY_WIDTH = 12;
-    private static final int VALUE_WIDTH = 11;
+    private static final int FOIL_QUANTITY_WIDTH = 10;
+    private static final int VALUE_WIDTH = 8;
+    private static final int FOIL_VALUE_WIDTH = 10;
+    private static final int TOTAL_VALUE_WIDTH = 11;
 
     @Override
     public String toString() {
@@ -279,14 +281,36 @@ public class Card {
         }
         s += sFoilQuantity;
 
-        // Total value
-        float value = getTotalValue();
+        // Value
+        float value = price;
         String valueS = String.format("%.2f", value);
         while (valueS.length() < VALUE_WIDTH-2) {
             valueS = " " + valueS;
         }
         valueS = "$ " + valueS;
         s += valueS;
+
+        s += "   ";
+
+        // Foil value
+        float foilValue = foilPrice;
+        String foilValueS = String.format("%.2f", foilValue);
+        while (foilValueS.length() < FOIL_VALUE_WIDTH-2) {
+            foilValueS = " " + foilValueS;
+        }
+        foilValueS = "$ " + foilValueS;
+        s += foilValueS;
+        
+        s += "   ";
+
+        // Total value
+        float totalValue = getTotalValue();
+        String totalValueS = String.format("%.2f", totalValue);
+        while (totalValueS.length() < TOTAL_VALUE_WIDTH-2) {
+            totalValueS = " " + totalValueS;
+        }
+        totalValueS = "$ " + totalValueS;
+        s += totalValueS;
 
         s += " ";
 
@@ -332,18 +356,36 @@ public class Card {
         s += sQuantity;
 
         // Foil Quantity
-        String sFoilQuantity = "Foil Qty.";
+        String sFoilQuantity = "F. Qty.";
         while (sFoilQuantity.length() < FOIL_QUANTITY_WIDTH) {
             sFoilQuantity += " ";
         }
         s += sFoilQuantity;
 
-        // Total value
-        String valueS = "Total value";
+        // Value
+        String valueS = "Value";
         while (valueS.length() < VALUE_WIDTH) {
-            valueS = " " + valueS;
+            valueS += " ";
         }
         s += valueS;
+        
+        s += "   ";
+
+        // Foil value
+        String foilValueS = "Foil Value";
+        while (foilValueS.length() < FOIL_VALUE_WIDTH) {
+            foilValueS += " ";
+        }
+        s += foilValueS;
+        
+        s += "   ";
+
+        // Total value
+        String totalValueS = "Total value";
+        while (totalValueS.length() < TOTAL_VALUE_WIDTH) {
+            totalValueS += " ";
+        }
+        s += totalValueS;
 
         s += " ";
 
