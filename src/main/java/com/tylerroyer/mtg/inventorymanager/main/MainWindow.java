@@ -19,6 +19,8 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
     private final HashMap<JButton, Card> viewButtons = new HashMap<>();
     private final HashMap<JButton, Card> editButtons = new HashMap<>();
 
+    private boolean isLoadingInProgress = false;
+
     private JMenuItem addCardMenuItem;
     private JMenuItem refreshDataMenuItem;
     private JMenuItem countUniqueCardsMenuItem;
@@ -231,8 +233,14 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         vScrollBar.setValue(vScrollBar.getMinimum());
     }
 
+    public void onLoadingFinished() {
+        isLoadingInProgress = false;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (isLoadingInProgress) return;
+
         // View buttons
         for (Entry<JButton, Card> entry : viewButtons.entrySet()) {
             if (e.getSource() == entry.getKey()) {
@@ -260,6 +268,7 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
                 new ConfirmCardWindow(this, response);
             }
         } else if (e.getSource() == refreshDataMenuItem) {
+            isLoadingInProgress = true;
             new RefreshCardsWindow(this);
         } else if (e.getSource() == sortByNameMenuItem) {
             Inventory.sort(Inventory.SortType.BY_NAME);

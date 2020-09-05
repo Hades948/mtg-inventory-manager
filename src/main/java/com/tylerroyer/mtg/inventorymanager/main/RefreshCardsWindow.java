@@ -50,6 +50,7 @@ public class RefreshCardsWindow extends JFrame {
     public void onCardsRefreshed() {
         parentWindow.refreshInventoryDisplay();
         parentWindow.scrollToTop();
+        parentWindow.onLoadingFinished();
 
         this.dispose();
     }
