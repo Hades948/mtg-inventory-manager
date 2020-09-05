@@ -364,6 +364,12 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
             String title = "Average Card Value";
             setStatus("Calculated average value of all cards in inventory.", Color.WHITE);
             JOptionPane.showMessageDialog(this, message, title, JOptionPane.PLAIN_MESSAGE);
+        } else if (e.getSource() == manualMenuItem) {
+            // TODO
+        } else if (e.getSource() == aboutMenuItem) {
+            new AboutWindow();
+        } else if (e.getSource() == contactMenuItem) {
+            // TODO
         }
     }
 
