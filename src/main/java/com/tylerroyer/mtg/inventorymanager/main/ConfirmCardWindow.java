@@ -134,8 +134,11 @@ public class ConfirmCardWindow extends JFrame implements ActionListener {
             if (newCard) {
                 parentWindow.scrollToBottom();
             }
+            
+            parentWindow.setStatus("Card has been added.", Colors.WHITE);
             this.dispose();
         } else if (e.getSource() == noButton || e.getSource() == okButton) {
+            parentWindow.setStatus("Addition canceled.  No changes were saved.", Colors.WHITE);
             this.dispose();
         }
     }

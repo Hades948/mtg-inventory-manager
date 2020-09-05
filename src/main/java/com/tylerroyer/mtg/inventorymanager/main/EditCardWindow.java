@@ -106,8 +106,11 @@ public class EditCardWindow extends JFrame implements ActionListener {
                 if (result == JOptionPane.YES_OPTION) {
                     Inventory.removeCard(card);
                     parentWindow.refreshInventoryDisplay();
+                    parentWindow.setStatus("Edit saved.  Card was removed.", Colors.WHITE);
                     this.dispose();
                     return;
+                } else {
+                    parentWindow.setStatus("Edit canceled.  No changes were saved.", Colors.WHITE);
                 }
             }
 
@@ -115,8 +118,10 @@ public class EditCardWindow extends JFrame implements ActionListener {
             card.setFoilQuantity(newFoilQuantity);
             Inventory.saveCard(card);
             parentWindow.refreshInventoryDisplay();
+            parentWindow.setStatus("Edit saved.", Colors.WHITE);
             this.dispose();
         } else if (e.getSource() == cancelButton) {
+            parentWindow.setStatus("Edit canceled.  No changes were saved.", Colors.WHITE);
             this.dispose();
         }
     }
