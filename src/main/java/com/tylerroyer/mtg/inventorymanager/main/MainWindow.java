@@ -49,7 +49,7 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         JMenu sortMenu = new JMenu("Sort");
         JMenu calculateMenu = new JMenu("Calculate");
         
-        addCardMenuItem = new JMenuItem("Add a new card to inventory");
+        addCardMenuItem = new JMenuItem("Add a new card to inventory ");
         addCardMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
         addCardMenuItem.setMnemonic(KeyEvent.VK_N);
         addCardMenuItem.addActionListener(this);

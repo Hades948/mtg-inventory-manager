@@ -281,7 +281,10 @@ public class Inventory {
         }
     }
 
-    public static void addCard(Card newCard, boolean isFoil) {
+    /**
+     * @return true if the card is new to the inventory.  false otherwise.
+     */
+    public static boolean addCard(Card newCard, boolean isFoil) {
         int index = findCard(newCard.getScryfallUUID());
 
         if (index == -1) { // New card
@@ -292,6 +295,7 @@ public class Inventory {
             }
             cards.add(newCard);
             saveCard(newCard);
+            return true;
         } else { // Card already exists
             if (isFoil) {
                 cards.get(index).setFoilQuantity(cards.get(index).getFoilQuantity() + newCard.getFoilQuantity());
@@ -299,6 +303,7 @@ public class Inventory {
                 cards.get(index).setQuantity(cards.get(index).getQuantity() + newCard.getQuantity());
             }
             saveCard(cards.get(index));
+            return false;
         }
     }
 
