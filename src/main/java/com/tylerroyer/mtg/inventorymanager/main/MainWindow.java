@@ -1,3 +1,5 @@
+// Copyright (C) 2020 Tyler Royer
+
 package com.tylerroyer.mtg.inventorymanager.main;
 
 import javax.swing.*;
@@ -167,7 +169,7 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         this.setVisible(true);
         scrollToTop();
 
-        setStatus("Welcome.", Colors.WHITE);
+        setStatus("Welcome to the MTG Inventory Manager.  Copyright © 2020 Tyler Royer", Colors.WHITE);
     }
 
     public void setStatus(String status, Color color) {

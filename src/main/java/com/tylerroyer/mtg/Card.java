@@ -1,3 +1,5 @@
+// Copyright (C) 2020 Tyler Royer
+
 package com.tylerroyer.mtg;
 
 import org.json.JSONArray;
@@ -10,7 +12,6 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 import com.tylerroyer.mtg.inventorymanager.main.Colors;
 

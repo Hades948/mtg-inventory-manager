@@ -1,9 +1,10 @@
+// Copyright (C) 2020 Tyler Royer
+
 package com.tylerroyer.mtg.inventorymanager.main;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
-import javax.swing.WindowConstants;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

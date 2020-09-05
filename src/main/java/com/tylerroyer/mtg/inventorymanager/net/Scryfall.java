@@ -1,3 +1,5 @@
+// Copyright (C) 2020 Tyler Royer
+
 package com.tylerroyer.mtg.inventorymanager.net;
 
 import java.io.BufferedReader;
