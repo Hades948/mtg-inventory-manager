@@ -8,10 +8,12 @@ import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
-public class RefreshCardsWindow extends JFrame {
+public class RefreshCardsWindow extends JFrame implements WindowListener {
     private final String TITLE = "Refreshing Cards...";
-    
+
     private int maxProgress;
 
     private MainWindow parentWindow;
@@ -35,8 +37,8 @@ public class RefreshCardsWindow extends JFrame {
         this.add(progressLabel, BorderLayout.NORTH);
         this.add(progressBar, BorderLayout.CENTER);
 
+        this.addWindowListener(this);
         this.setTitle(TITLE);
-        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -51,7 +53,27 @@ public class RefreshCardsWindow extends JFrame {
         parentWindow.refreshInventoryDisplay();
         parentWindow.scrollToTop();
         parentWindow.onLoadingFinished();
+        parentWindow.setStatus("Card refresh finshed.", Colors.WHITE);
 
         this.dispose();
     }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        parentWindow.setStatus("Card refresh canceled.", Colors.WHITE);
+        parentWindow.onLoadingFinished();
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {}
+    @Override
+    public void windowOpened(WindowEvent e) {}
+    @Override
+    public void windowIconified(WindowEvent e) {}
+    @Override
+    public void windowDeiconified(WindowEvent e) {}
+    @Override
+    public void windowActivated(WindowEvent e) {}
+    @Override
+    public void windowDeactivated(WindowEvent e) {}
 }

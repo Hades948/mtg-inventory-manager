@@ -37,9 +37,10 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
     private JMenuItem sortByValueMenuItem;
     private JMenuItem sortByFoilValueMenuItem;
     private JMenuItem sortByTotalValueMenuItem;
-    private JMenuItem faqsMenuItem;
+    private JMenuItem manualMenuItem;
     private JMenuItem aboutMenuItem;
     private JMenuItem contactMenuItem;
+    private JLabel statusLabel;
     private JPanel cardsPanel;
     private JScrollPane scrollPane;
 
@@ -48,6 +49,11 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         this.setTitle(TITLE);
         this.addKeyListener(this);
         this.setLayout(new BorderLayout());
+
+        statusLabel = new JLabel();
+        statusLabel.setOpaque(true);
+        statusLabel.setBackground(Colors.BLACK);
+        this.add(statusLabel, BorderLayout.SOUTH);
 
         JMenuBar menuBar = new JMenuBar();
         JMenu actionsMenu = new JMenu("Actions");
@@ -129,9 +135,9 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         getTotalValueMenuItem.addActionListener(this);
         calculateMenu.add(getTotalValueMenuItem);
 
-        faqsMenuItem = new JMenuItem("FAQs");
-        faqsMenuItem.addActionListener(this);
-        helpMenu.add(faqsMenuItem);
+        manualMenuItem = new JMenuItem("Manual");
+        manualMenuItem.addActionListener(this);
+        helpMenu.add(manualMenuItem);
 
         aboutMenuItem = new JMenuItem("About");
         aboutMenuItem.addActionListener(this);
@@ -160,6 +166,13 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         refreshInventoryDisplay();
         this.setVisible(true);
         scrollToTop();
+
+        setStatus("Welcome.", Colors.WHITE);
+    }
+
+    public void setStatus(String status, Color color) {
+        statusLabel.setForeground(color);
+        statusLabel.setText(" " + status);
     }
 
     public void refreshInventoryDisplay() {
@@ -239,12 +252,16 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (isLoadingInProgress) return;
+        if (isLoadingInProgress) {
+            setStatus("Warning: Cannot perform any actions while a refresh is in progress.", Colors.WARNING_YELLOW);
+            return;
+        }
 
         // View buttons
         for (Entry<JButton, Card> entry : viewButtons.entrySet()) {
             if (e.getSource() == entry.getKey()) {
                 new ViewCardWindow(entry.getValue());
+                setStatus("View card: " + entry.getValue().getName() + ".", Colors.WHITE);
 
                 return;
             }
@@ -254,77 +271,96 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         for (Entry<JButton, Card> entry : editButtons.entrySet()) {
             if (e.getSource() == entry.getKey()) {
                 new EditCardWindow(this, entry.getValue());
+                setStatus("Edit card: " + entry.getValue().getName() + ".", Colors.WHITE);
 
                 return;
             }
         }
 
         if (e.getSource() == addCardMenuItem) {
-            String message = "Enter card set, collector number.  Example: \"AAA 123\"";
+            setStatus("Opened Add Card prompt.", Colors.WHITE);
+
+            String message = "Enter card set and collector number.  Example: \"AAA 123\"";
             String title = "Enter Card Info";
             String response = (String) JOptionPane.showInputDialog(this, message, title, JOptionPane.PLAIN_MESSAGE);
+            setStatus("User entered card data: " + response, Colors.WHITE);
             
             if (response != null) {
                 new ConfirmCardWindow(this, response);
             }
         } else if (e.getSource() == refreshDataMenuItem) {
+            setStatus("Refreshing card data...", Color.WHITE);
             isLoadingInProgress = true;
             new RefreshCardsWindow(this);
         } else if (e.getSource() == sortByNameMenuItem) {
             Inventory.sort(Inventory.SortType.BY_NAME);
             refreshInventoryDisplay();
+            setStatus("Sorted inventory by name.", Color.WHITE);
             scrollToTop();
         } else if (e.getSource() == sortByTypeMenuItem) {
             Inventory.sort(Inventory.SortType.BY_TYPE);
             refreshInventoryDisplay();
+            setStatus("Sorted inventory by type.", Color.WHITE);
             scrollToTop();
         } else if (e.getSource() == sortByCollectorNumberMenuItem) {
             Inventory.sort(Inventory.SortType.BY_COLLECTOR_NUMBER);
             refreshInventoryDisplay();
+            setStatus("Sorted inventory by set and collector number.", Color.WHITE);
             scrollToTop();
         } else if (e.getSource() == sortByColorMenuItem) {
             Inventory.sort(Inventory.SortType.BY_COLOR);
             refreshInventoryDisplay();
+            setStatus("Sorted inventory by color.", Color.WHITE);
             scrollToTop();
         } else if (e.getSource() == sortByQuantityMenuItem) {
             Inventory.sort(Inventory.SortType.BY_QUANTITY);
             refreshInventoryDisplay();
+            setStatus("Sorted inventory by quantity.", Color.WHITE);
             scrollToTop();
         } else if (e.getSource() == sortByFoilQuantityMenuItem) {
             Inventory.sort(Inventory.SortType.BY_FOIL_QUANTITY);
             refreshInventoryDisplay();
+            setStatus("Sorted inventory by foil quantity.", Color.WHITE);
             scrollToTop();
         } else if (e.getSource() == sortByTotalQuantityMenuItem) {
             Inventory.sort(Inventory.SortType.BY_TOTAL_QUANTITY);
             refreshInventoryDisplay();
+            setStatus("Sorted inventory by total quantity.", Color.WHITE);
             scrollToTop();
         } else if (e.getSource() == sortByValueMenuItem) {
             Inventory.sort(Inventory.SortType.BY_VALUE);
             refreshInventoryDisplay();
+            setStatus("Sorted inventory by card value.", Color.WHITE);
             scrollToTop();
         } else if (e.getSource() == sortByFoilValueMenuItem) {
             Inventory.sort(Inventory.SortType.BY_FOIL_VALUE);
             refreshInventoryDisplay();
+            setStatus("Sorted inventory by foil card value.", Color.WHITE);
             scrollToTop();
         } else if (e.getSource() == sortByTotalValueMenuItem) {
             Inventory.sort(Inventory.SortType.BY_TOTAL_VALUE);
             refreshInventoryDisplay();
+            setStatus("Sorted inventory by total value of entry.", Color.WHITE);
             scrollToTop();
         } else if (e.getSource() == countUniqueCardsMenuItem) {
             String message = "You have " + Inventory.getNumberOfUniqueCards() + " unique cards in your inventory.";
             String title = "Unique Card Count";
+            setStatus("Counted number of unique cards in inventory.", Color.WHITE);
             JOptionPane.showMessageDialog(this, message, title, JOptionPane.PLAIN_MESSAGE);
         } else if (e.getSource() == countTotalCardsMenuItem) {
             String message = "You have " + Inventory.getTotalNumberOfCards() + " total cards in your inventory.";
             String title = "Total Card Count";
+            setStatus("Counted total number of cards in inventory (regular card quantity + foil card quantity).", Color.WHITE);
             JOptionPane.showMessageDialog(this, message, title, JOptionPane.PLAIN_MESSAGE);
         } else if (e.getSource() == getTotalValueMenuItem) {
             String message = String.format("Your cards are worth a total of $%.2f.", Inventory.getTotalValueOfCards());
             String title = "Total Card Value";
+            setStatus("Calculated total value of all cards in inventory.", Color.WHITE);
             JOptionPane.showMessageDialog(this, message, title, JOptionPane.PLAIN_MESSAGE);
         } else if (e.getSource() == getAverageValueMenuItem) {
             String message = String.format("On average, each of your cards are worth $%.2f.", Inventory.getAverageValueOfCards());
             String title = "Average Card Value";
+            setStatus("Calculated average value of all cards in inventory.", Color.WHITE);
             JOptionPane.showMessageDialog(this, message, title, JOptionPane.PLAIN_MESSAGE);
         }
     }
