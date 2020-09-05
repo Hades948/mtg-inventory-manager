@@ -32,6 +32,8 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
     private JMenuItem sortByQuantityMenuItem;
     private JMenuItem sortByFoilQuantityMenuItem;
     private JMenuItem sortByTotalQuantityMenuItem;
+    private JMenuItem sortByValueMenuItem;
+    private JMenuItem sortByFoilValueMenuItem;
     private JMenuItem sortByTotalValueMenuItem;
     private JPanel cardsPanel;
     private JScrollPane scrollPane;
@@ -90,6 +92,14 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         sortMenu.add(sortByTotalQuantityMenuItem);
 
         sortMenu.add(new JSeparator());
+
+        sortByValueMenuItem = new JMenuItem("By Value");
+        sortByValueMenuItem.addActionListener(this);
+        sortMenu.add(sortByValueMenuItem);
+
+        sortByFoilValueMenuItem = new JMenuItem("By Foil Value");
+        sortByFoilValueMenuItem.addActionListener(this);
+        sortMenu.add(sortByFoilValueMenuItem);
 
         sortByTotalValueMenuItem = new JMenuItem("By Total Value");
         sortByTotalValueMenuItem.addActionListener(this);
@@ -260,6 +270,14 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
             scrollToTop();
         } else if (e.getSource() == sortByTotalQuantityMenuItem) {
             Inventory.sort(Inventory.SortType.BY_TOTAL_QUANTITY);
+            refreshInventoryDisplay();
+            scrollToTop();
+        } else if (e.getSource() == sortByValueMenuItem) {
+            Inventory.sort(Inventory.SortType.BY_VALUE);
+            refreshInventoryDisplay();
+            scrollToTop();
+        } else if (e.getSource() == sortByFoilValueMenuItem) {
+            Inventory.sort(Inventory.SortType.BY_FOIL_VALUE);
             refreshInventoryDisplay();
             scrollToTop();
         } else if (e.getSource() == sortByTotalValueMenuItem) {

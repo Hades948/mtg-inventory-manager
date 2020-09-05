@@ -13,7 +13,8 @@ import org.json.JSONObject;
 
 public class Inventory {
     public static enum SortType {
-        BY_NAME, BY_TYPE, BY_COLLECTOR_NUMBER, BY_COLOR, BY_QUANTITY, BY_FOIL_QUANTITY, BY_TOTAL_QUANTITY, BY_TOTAL_VALUE
+        BY_NAME, BY_TYPE, BY_COLLECTOR_NUMBER, BY_COLOR, BY_QUANTITY, BY_FOIL_QUANTITY, BY_TOTAL_QUANTITY,
+        BY_VALUE, BY_FOIL_VALUE, BY_TOTAL_VALUE
     }
 
     private static ArrayList<Card> cards;
@@ -228,6 +229,38 @@ public class Inventory {
 
                 cards.clear();
                 cards.addAll(sortedByTotalQuantity);
+                break;
+            case BY_VALUE:
+                ArrayList<Card> sortedByValue = new ArrayList<>();
+                for (Card card : cards) {
+                    int index = sortedByValue.size();
+                    for (int i = 0; i < sortedByValue.size(); i++) {
+                        if (sortedByValue.get(i).getPrice() < card.getPrice()) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    sortedByValue.add(index, card);
+                }
+
+                cards.clear();
+                cards.addAll(sortedByValue);
+                break;
+            case BY_FOIL_VALUE:
+                ArrayList<Card> sortedByFoilValue = new ArrayList<>();
+                for (Card card : cards) {
+                    int index = sortedByFoilValue.size();
+                    for (int i = 0; i < sortedByFoilValue.size(); i++) {
+                        if (sortedByFoilValue.get(i).getFoilPrice() < card.getFoilPrice()) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    sortedByFoilValue.add(index, card);
+                }
+
+                cards.clear();
+                cards.addAll(sortedByFoilValue);
                 break;
             case BY_TOTAL_VALUE:
                 ArrayList<Card> sortedByTotalValue = new ArrayList<>();
