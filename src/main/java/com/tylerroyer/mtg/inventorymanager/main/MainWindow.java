@@ -35,6 +35,9 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
     private JMenuItem sortByValueMenuItem;
     private JMenuItem sortByFoilValueMenuItem;
     private JMenuItem sortByTotalValueMenuItem;
+    private JMenuItem faqsMenuItem;
+    private JMenuItem aboutMenuItem;
+    private JMenuItem contactMenuItem;
     private JPanel cardsPanel;
     private JScrollPane scrollPane;
 
@@ -48,6 +51,7 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         JMenu actionsMenu = new JMenu("Actions");
         JMenu sortMenu = new JMenu("Sort");
         JMenu calculateMenu = new JMenu("Calculate");
+        JMenu helpMenu = new JMenu("Help");
         
         addCardMenuItem = new JMenuItem("Add a new card to inventory ");
         addCardMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
@@ -123,9 +127,22 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         getTotalValueMenuItem.addActionListener(this);
         calculateMenu.add(getTotalValueMenuItem);
 
+        faqsMenuItem = new JMenuItem("FAQs");
+        faqsMenuItem.addActionListener(this);
+        helpMenu.add(faqsMenuItem);
+
+        aboutMenuItem = new JMenuItem("About");
+        aboutMenuItem.addActionListener(this);
+        helpMenu.add(aboutMenuItem);
+
+        contactMenuItem = new JMenuItem("Contact");
+        contactMenuItem.addActionListener(this);
+        helpMenu.add(contactMenuItem);
+
         menuBar.add(actionsMenu);
         menuBar.add(sortMenu);
         menuBar.add(calculateMenu);
+        menuBar.add(helpMenu);
         this.setJMenuBar(menuBar);
 
         JLabel headersLabel = new JLabel(Card.getHeader());
