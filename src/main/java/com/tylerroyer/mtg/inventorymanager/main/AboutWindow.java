@@ -37,7 +37,7 @@ public class AboutWindow extends JFrame {
         licenseLabel.setFont(new Font("Ariel", Font.PLAIN, 18));
         this.add(licenseLabel);
 
-        String versionText = "<html><p style=\"text-align:center;\">Version 0.1.0</p></html>";
+        String versionText = "<html><p style=\"text-align:center;\">Version 1.0.0</p></html>";
         JLabel versionLabel = new JLabel(versionText, SwingConstants.CENTER);
         versionLabel.setFont(new Font("Ariel", Font.PLAIN, 14));
         this.add(versionLabel);

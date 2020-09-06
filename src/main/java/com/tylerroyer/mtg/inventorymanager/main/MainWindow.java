@@ -39,7 +39,6 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
     private JMenuItem sortByValueMenuItem;
     private JMenuItem sortByFoilValueMenuItem;
     private JMenuItem sortByTotalValueMenuItem;
-    private JMenuItem manualMenuItem;
     private JMenuItem aboutMenuItem;
     private JMenuItem contactMenuItem;
     private JLabel statusLabel;
@@ -136,10 +135,6 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         getTotalValueMenuItem = new JMenuItem("Total value of all cards");
         getTotalValueMenuItem.addActionListener(this);
         calculateMenu.add(getTotalValueMenuItem);
-
-        manualMenuItem = new JMenuItem("Manual");
-        manualMenuItem.addActionListener(this);
-        helpMenu.add(manualMenuItem);
 
         aboutMenuItem = new JMenuItem("About");
         aboutMenuItem.addActionListener(this);
@@ -364,9 +359,6 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
             String title = "Average Card Value";
             setStatus("Calculated average value of all cards in inventory.", Color.WHITE);
             JOptionPane.showMessageDialog(this, message, title, JOptionPane.PLAIN_MESSAGE);
-        } else if (e.getSource() == manualMenuItem) {
-            new ManualWindow();
-            setStatus("Manual window opened.", Color.WHITE);
         } else if (e.getSource() == aboutMenuItem) {
             new AboutWindow();
             setStatus("About window opened.", Color.WHITE);
