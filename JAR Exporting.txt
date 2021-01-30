@@ -1,0 +1,2 @@
+To export to jar with dependencies (assuming POM hasn't been screwed up):
+mvn compile assembly:single
