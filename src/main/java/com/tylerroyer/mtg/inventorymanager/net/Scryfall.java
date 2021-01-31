@@ -138,15 +138,25 @@ public class Scryfall {
 
         // Remaining card attributes may be in a "card_faces" list if the card has multiple faces.
         // In this case, we will just use the front face for attributes.
-        if (data.has("card_faces")) {
+        // However!  Adventure cards also use the "card_faces" list.  Which is stupid.  So, don't include those cards.
+        // If Wizards adds a two-faced adventure card, I might die.
+        if (data.has("card_faces")  && !data.getString("layout").equals("adventure")) {
             data = data.getJSONArray("card_faces").getJSONObject(0);
         }
 
         // Name
-        card.setName(data.getString("name"));
+        String name = data.getString("name");
+        if (name.contains("//")) {
+            name = name.substring(0, name.indexOf(" //"));
+        }
+        card.setName(name);
 
         // Type
-        card.setType(data.getString("type_line").replace("—", "-"));
+        String type = data.getString("type_line").replace("—", "-");
+        if (type.contains("//")) {
+            type = type.substring(0, type.indexOf(" //"));
+        }
+        card.setType(type);
         
         // Image
         try {

@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Tyler Royer
+// Copyright (C) 2021 Tyler Royer
 
 package com.tylerroyer.mtg.inventorymanager.main;
 
