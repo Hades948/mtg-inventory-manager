@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Tyler Royer
+// Copyright (C) 2021 Tyler Royer
 
 package com.tylerroyer.mtg.inventorymanager.net;
 
@@ -105,24 +105,14 @@ public class Scryfall {
         JSONObject json = new JSONObject(response.toString());
         JSONObject data = json.getJSONArray("data").getJSONObject(0);
 
-        // Name
-        String name = data.getString("name");
-        int slashIndex = name.indexOf("//");
-        if (slashIndex >= 0) {
-            name = name.substring(0, slashIndex);
-        }
-        card.setName(name);
-
-        // Type
-        String type = data.getString("type_line").replace("—", "-");
-        slashIndex = type.indexOf(" // ");
-        if (slashIndex >= 0) {
-            type = type.substring(0, slashIndex);
-        }
-        card.setType(type);
-
+        // Set
         card.setSet(data.getString("set"));
+
+        // Set Name
         card.setSetName(data.getString("set_name"));
+        
+        // ID
+        card.setScryfallUUID(data.getString("id"));
 
         // Collector number
         String collectorNum = data.getString("collector_number");
@@ -130,30 +120,40 @@ public class Scryfall {
             collectorNum = "0" + collectorNum;
         }
         card.setCollectorNumber(collectorNum);
-        
-        // Image
-        try {
-            card.setImageUrl(data.getJSONObject("image_uris").getString("normal"));
-        } catch (JSONException e) {
-            System.out.println("No image found.");
-            card.setImageUrl("null");
-        }
-        
-        card.setScryfallUUID(data.getString("id"));
 
         // Prices
         JSONObject prices = data.getJSONObject("prices");
         try {
             card.setPrice(prices.getFloat("usd"));
         } catch (JSONException e) {
-            System.out.println("No price listed.  Ignoring.");
+            System.out.println("No price listed for id=" + card.getScryfallUUID() + ".  Ignoring.");
             card.setPrice(0.0f);
         }
         try {
             card.setFoilPrice(prices.getFloat("usd_foil"));
         } catch (JSONException e) {
-            System.out.println("No foil price listed.  Ignoring.");
+            System.out.println("No foil price listed for id=" + card.getScryfallUUID() + ".  Ignoring.");
             card.setFoilPrice(0.0f);
+        }
+
+        // Remaining card attributes may be in a "card_faces" list if the card has multiple faces.
+        // In this case, we will just use the front face for attributes.
+        if (data.has("card_faces")) {
+            data = data.getJSONArray("card_faces").getJSONObject(0);
+        }
+
+        // Name
+        card.setName(data.getString("name"));
+
+        // Type
+        card.setType(data.getString("type_line").replace("—", "-"));
+        
+        // Image
+        try {
+            card.setImageUrl(data.getJSONObject("image_uris").getString("normal"));
+        } catch (JSONException e) {
+            System.out.println("No image found for card " + card.getName() + ".");
+            card.setImageUrl("null");
         }
 
         // Colors
@@ -180,7 +180,7 @@ public class Scryfall {
             }
             card.setColors(longColors);
         } catch (JSONException e) {
-            System.out.println("Colors not found.");
+            System.out.println("Colors not found for card " + card.getName() + ".");
             JSONArray unknown = new JSONArray();
             unknown.put("Unknown");
             card.setColors(unknown);

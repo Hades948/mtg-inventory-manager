@@ -164,7 +164,7 @@ public class MainWindow extends JFrame implements ActionListener, KeyListener {
         this.setVisible(true);
         scrollToTop();
 
-        setStatus("Welcome to the MTG Inventory Manager.  Copyright © 2020 Tyler Royer", Colors.WHITE);
+        setStatus("Welcome to the MTG Inventory Manager.  Copyright © 2021 Tyler Royer", Colors.WHITE);
     }
 
     public void setStatus(String status, Color color) {

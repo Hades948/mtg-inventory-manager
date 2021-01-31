@@ -8,6 +8,10 @@ https://hades948.wixsite.com/tylerroyerportfolio/contact
 NOTE: You will likely need a recent version of Java to run this program.
 You can download the most recent version from Oracle https://www.java.com
 
+Updates:
+1.1.0
+- Cards with more than one face are now added properly ("Actions" -> "Refresh all card data" to update)
+
 
 
 This software is licensed under the GNU GPL 3.0 license.
@@ -15,4 +19,4 @@ This software is licensed under the GNU GPL 3.0 license.
 This software uses resources from, but is not affiliated with
 "Scryfall" and "Wizards of the Coast."
 
-Copyright (C) 2020 Tyler Royer
+Copyright (C) 2021 Tyler Royer
