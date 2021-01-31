@@ -10,7 +10,7 @@ You can download the most recent version from Oracle https://www.java.com
 
 Updates:
 1.1.0
-- Cards with more than one face are now added properly ("Actions" -> "Refresh all card data" to update)
+- Cards with more than one face are now added properly ("Actions" -> "Refresh all card data" to update).
 
 
 
